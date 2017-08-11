@@ -140,8 +140,3 @@ with open(tstamp + '_bot_summary.csv', 'w', encoding='utf-8') as csvfile:
     writer.writeheader()
     for row in lRow:
         writer.writerow(row)
-
-with open(tstamp + '_bot_summary.csv', 'r') as csvfile:
-    testf = slack_client.api_call("files.upload", file = csvfile, filename = tstamp + '_bot_summary.csv', channels = chan)
-# print(testf)
-return "There you go!"
