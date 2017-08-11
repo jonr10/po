@@ -55,10 +55,7 @@ def find_date(string):
             return is_valid_date(' '.join(string[i:j - 1]))
     return False
 
-pocket_tokens = [os.environ.get(person + "_POCKET")
-                                for person in ["BOWDITCH", "FARAI", "COXON"]]
-
-pocket_tokens
+pocket_tokens = os.environ.get("JON_POCKET")
 c_key = os.environ.get("POCKET_TOKEN")
 SMMRY_API = os.environ.get('SMMRY_API')
 links = {}
@@ -66,20 +63,20 @@ tt =[]
 since = None
 wanted_fields = set(['resolved_url', 'given_url', 'given_title', 'resolved_url', 'tags', 'resolved_title'])
 
-for pock_toke in pocket_tokens:
-    p = Pocket(consumer_key = c_key, access_token = pock_toke)
-    poks = p.get(sort = 'newest', detailType = 'complete', since = since)[0] #tag, since parameters too
-    #print(poks)
-    for key in poks['list']:
-        if key == '1502819':
-            print('skip')
-            continue
-        # print(poks['list'][key].keys())
-        item = poks['list'][key].keys()
-        links[key] = {k:poks['list'][key][k] for k in item if k in wanted_fields}
 
-        #links[key] = {'url' : poks['list'][key]['given_url'], 'title' : poks['list'][key]['given_title'], \
-        #'tags': poks['list'][key]['tags']}
+p = Pocket(consumer_key = c_key, access_token = pocket_tokens)
+poks = p.get(sort = 'newest', detailType = 'complete', since = since)[0] #tag, since parameters too
+#print(poks)
+for key in poks['list']:
+    if key == '1502819':
+        print('skip')
+        continue
+    # print(poks['list'][key].keys())
+    item = poks['list'][key].keys()
+    links[key] = {k:poks['list'][key][k] for k in item if k in wanted_fields}
+
+    #links[key] = {'url' : poks['list'][key]['given_url'], 'title' : poks['list'][key]['given_title'], \
+    #'tags': poks['list'][key]['tags']}
 link_keys = [k for k in links]
 
 e = requests.Session()
